@@ -1,0 +1,39 @@
+version: "1.0"
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_BASE_ENDPOINT=http://localhost:4000
+
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    environment:
+      - JWT_SECRET=sdgkMKEVlm3v23kl_n423vGG3b_TVnm234xnv23
+      - MONGO_URI=mongodb://localhost:27017/ECOM
+      - JWT_REFRESH_SECRET=rerv1jv15v1CVBnasd23jnv1j3123nvrqwr23
+    volumes:
+      - data:/var/www/data/db
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  data:
